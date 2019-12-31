@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <img src="./assets/pepe.png"/>
     <HelloWorld msg="Suck my Weiner"/>
   </div>
 </template>
