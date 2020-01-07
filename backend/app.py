@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from flask import Flask
+from flask import Flask, request, jsonify
 from bson import ObjectId
 
 app = Flask(__name__)
@@ -16,7 +16,23 @@ class User(db.Model):
     def __repr__(self):
         return "User %r>" % self.username
 
-@app.route('/')
+    def __init__(self, id, username, email):
+        self.id = id
+        self.username = username
+        self.email = email
+@app.route('/user', methods=['POST'])
+def addUser():
+    id = create_objectid();
+    username = request.json['username']
+    email = request.json['email']
+
+    new_user = User(id, username, email)
+
+    db.session.add(new_user)
+    db.session.commit()
+    return new_user
+
+@app.route('/', methods=["GET"])
 def create_objectid():
     a = ObjectId()
     return str(a)
