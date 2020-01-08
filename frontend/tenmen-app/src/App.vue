@@ -1,18 +1,13 @@
 <template>
   <div id="app">
-    <img src="./assets/pepe.png"/>
-    <loginScreen/>
+    <router-view/>
   </div>
 </template>
 
 <script>
-import loginScreen from './components/loginScreen.vue'
 
 export default {
-  name: 'app',
-  components: {
-    loginScreen
-  }
+  name: 'app'
 }
 </script>
 

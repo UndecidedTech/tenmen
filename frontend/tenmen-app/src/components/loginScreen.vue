@@ -1,14 +1,27 @@
 <template>
-  <div class="hello">
-    <label for="name">Username (4 to 8 characters):</label>
-    <input type="text" id="username" name="name" required
-       minlength="4" maxlength="8" size="10" v-model="user.username">
-    <label for="name">Password (4 to 8 characters):</label>
-    <input type="text" id="password" name="name" size="10" v-model="user.password" >
-    <button class="favorite styled" type="button" size="10" @click="loginClick">
-      Login
-    </button>
+<div>
+  <img height="140px" src="../assets/pepe.png"/>
+  <div class="row">
+   <body class="text-center mx-auto">
+    <form class="form-signin">
+    <img class="mb-4" src="/docs/4.4/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="inputUsername" class="sr-only">Username</label>
+    <input type="username" id="inputUsername" class="form-control" placeholder="Username" required="" autofocus="" v-model="user.username">
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required="" v-model="user.password">
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
   </div>
+  <button class="btn btn-lg btn-primary btn-block" @click="loginClick">Sign in</button>
+</form>
+
+
+</body>
+  </div>
+</div>
 </template>
 <script>
 export default {
