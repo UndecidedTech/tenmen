@@ -4,10 +4,16 @@
 import string
 import random 
 import os
+import requests
+import json
 from bson import ObjectId
 names = ["Emily","Hannah","Madison","Ashley","Sarah","Alexis","Samantha","Jessica","Elizabeth","Taylor","Lauren","Alyssa","Kayla","Abigail","Brianna","Olivia","Emma","Megan","Grace","Victoria","Rachel","Anna","Sydney","Destiny"]
 
 def createusers(names):
+    url = 'https://localhost:5000/user'
+    headers = {'content-type': 'application/json'}
+ 
+    r = requests.post(url, data=json.dumps(payload), headers=headers)
     users = []
     for i in range(len(names)):
         user = {}
@@ -18,6 +24,7 @@ def createusers(names):
             user["lastname"] = names[0]
         else:
             user["lastname"] = names[i+1]
+        r.requests.post(url, data=json.dumps(user), headers=headers)
         users.append(user)
     print( users )
 createusers(names)
