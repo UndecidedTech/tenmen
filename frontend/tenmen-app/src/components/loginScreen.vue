@@ -12,7 +12,7 @@
 </template>
 <script>
 export default {
-  name: 'HelloWorld',
+  name: 'loginScreen',
   props: {
     msg: String
   },

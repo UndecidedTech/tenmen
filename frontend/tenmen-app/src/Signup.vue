@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <img src="./assets/pepe.png"/>
-    <loginScreen/>
+    <HelloWorld msg="Suck my Weiner"/>
   </div>
 </template>
 
 <script>
-import loginScreen from './components/loginScreen.vue'
+import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'app',
   components: {
-    loginScreen
+    HelloWorld
   }
 }
 </script>
