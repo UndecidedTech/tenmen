@@ -1,5 +1,18 @@
 <template>
-  <p>No stealing</p>
+<div>
+    <div class="container">
+    <div class="row">
+        <div class="form-group col-6">
+            <label for="inputUsername">Username:</label>
+            <input type="text" class="form-control" id="inputUsername"/>
+        </div>    
+        <div class="form-group col-6">
+            <label for="inputPassword">Password:</label>
+            <input type="text" class="form-control" id="inputPassword"/>
+        </div>
+    </div>
+    </div>
+</div>
 </template>
 <script>
 export default {
@@ -32,5 +45,11 @@ li {
 }
 a {
   color: #42b983;
+}
+.container {
+    position: relative;
+    width: 80%;
+    height: 100%
+
 }
 </style>

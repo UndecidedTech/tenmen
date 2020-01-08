@@ -1,6 +1,6 @@
 <template>
 <div>
-  <img height="140px" src="../assets/pepe.png"/>
+  <img class="pepe" height="140px" src="../assets/pepe.png"/>
   <div class="row">
    <body class="text-center mx-auto">
     <form class="form-signin">
@@ -59,5 +59,10 @@ li {
 }
 a {
   color: #42b983;
+}
+.pepe {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
 }
 </style>
