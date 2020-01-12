@@ -14,7 +14,7 @@
       <li id="tool-color-palette" @click="showColorPalette()">
         <img src="@/assets/color-palette.svg"/>
       </li>
-      <li id="tool-download" @click="download()">
+      <li id="tool-download" @click="get()">
         <img src="@/assets/download.svg"/>
       </li>
     </ul>
@@ -135,6 +135,12 @@ export default {
       link.href = this.$refs.canvas.toDataURL()
       link.click();
     },
+    get() {
+      // const answer = this.$refs.canvas.toDataURL();
+      var data = this.$refs.canvas.getImageData(0, 0, this.width, this.height);
+
+      alert(data)
+    }
   }
 }
 </script>
