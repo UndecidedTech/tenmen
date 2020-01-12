@@ -17,6 +17,9 @@
       <li id="tool-download" @click="get()">
         <img src="@/assets/download.svg"/>
       </li>
+      <li id="tool-upload" @keyup="set()">
+        <input type= "text"/>
+      </li>
     </ul>
   </div>
 </template>
@@ -44,6 +47,8 @@ export default {
   },
   data() {
     return {
+      imgdata: null,
+      imgArray: null,
       canvasContext: null,
       cursorContext: null,
       isDrawing: false,
@@ -138,11 +143,15 @@ export default {
     get() {
       // const answer = this.$refs.canvas.toDataURL();
       // alert(this.width, this.height);
-      var imageData = this.$refs.canvas.getContext("2d").getImageData(0, 0, this.width, this.height)
+      this.imgdata = this.$refs.canvas.getContext("2d").getImageData(0, 0, this.width, this.height)
       //var data = this.cursorContext.getImageData(0, 0, `${this.width}px`, `${this.height}`);
-
-      alert(JSON.stringify(imageData))
+      this.imgArray = this.imgdata.data;
+      alert(JSON.stringify(this.imgArray))
+    },
+    set(imgArray) {
+      this.$refs.canvas.putImageData(imgArray, 0 , 0);
     }
+
   }
 }
 </script>
