@@ -137,9 +137,11 @@ export default {
     },
     get() {
       // const answer = this.$refs.canvas.toDataURL();
-      var data = this.$refs.canvas.getImageData(0, 0, this.width, this.height);
+      // alert(this.width, this.height);
+      var imageData = this.$refs.canvas.getContext("2d").getImageData(0, 0, this.width, this.height)
+      //var data = this.cursorContext.getImageData(0, 0, `${this.width}px`, `${this.height}`);
 
-      alert(data)
+      alert(JSON.stringify(imageData))
     }
   }
 }
