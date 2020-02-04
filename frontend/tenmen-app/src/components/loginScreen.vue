@@ -5,7 +5,7 @@
    <body class="text-center mx-auto">
     <form class="form-signin">
     <img class="mb-4" src="/docs/4.4/assets/brand/bootstrap-solid.svg" alt="" width="72" height="72">
-    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <h1 class="h3 mb-3 font-weight-normal">Please log in</h1>
     <label for="inputUsername" class="sr-only">Username</label>
     <input type="username" id="inputUsername" class="form-control" placeholder="Username" required="" autofocus="" v-model="user.username">
     <label for="inputPassword" class="sr-only">Password</label>
@@ -15,7 +15,7 @@
             <input type="checkbox" value="remember-me"> Remember me
         </label>
   </div>
-  <button class="btn btn-lg btn-primary btn-block" @click="loginClick">Sign in</button>
+  <button class="btn btn-lg btn-primary btn-block" @click="loginClick">Log in</button>
 </form>
 
 

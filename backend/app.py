@@ -25,7 +25,9 @@ def addUser():
     id = create_objectid();
     username = request.json['username']
     email = request.json['email']
-
+        # hash password 
+        # include firstname and lastname
+        
     new_user = User(id, username, email)
 
     db.session.add(new_user)
