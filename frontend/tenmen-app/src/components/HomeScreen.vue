@@ -1,9 +1,7 @@
 <template>
   <div id="app">
     <h1>vue-draw</h1>
-    <div class="show-area">
-      <CanvasDraw :width="640" :height="480" :outputName="'example'"/>
-    </div>
+    <canvasDraw/>
   </div>
 </template>
 

@@ -1,160 +1,53 @@
 <template>
-  <div class="canvas-wrapper" ref="canvasWrapper">
-    <div class="draw-area">
-      <canvas id="canvas" ref="canvas" :width="width" :height="height"></canvas>
-      <canvas id="cursor" ref="cursor" :width="width" :height="height"></canvas>
-    </div>
-    <ul class="tools">
-      <li id="tool-pencil" :class="{ active: selectedToolIdx === 0 }" @click="changeTool(0)">
-        <img src="@/assets/edit.svg"/>
-      </li>
-      <li id="tool-eraser" :class="{ active: selectedToolIdx === 1 }" @click="changeTool(1)">
-        <img src="@/assets/eraser.svg"/>
-      </li>
-      <li id="tool-color-palette" @click="showColorPalette()">
-        <img src="@/assets/color-palette.svg"/>
-      </li>
-      <li id="tool-download" @click="get()">
-        <img src="@/assets/download.svg"/>
-      </li>
-      <li id="tool-upload" @keyup="set()">
-        <input type= "text"/>
-      </li>
-    </ul>
+  <div id="sketch-holder">
   </div>
 </template>
 
 <script>
+import io from "socket.io-client"
+import io from "socket.io"
+import p5 from "p5"
+
 export default {
   name: 'CanvasDraw',
-  props: {
-    brushSize: {
-      type: Number,
-      default: 12,
-    },
-    width: {
-      type: Number,
-      default: 640,
-    },
-    height: {
-      type: Number,
-      default: 480,
-    },
-    outputName: {
-      type: String,
-      default: 'canvas',
-    },
-  },
-  data() {
-    return {
-      imgdata: null,
-      imgArray: null,
-      canvasContext: null,
-      cursorContext: null,
-      isDrawing: false,
-      lastX: 0,
-      lastY: 0,
-      tools: [
-        {
-          name: 'Pencil',
-          color: '#000000',
-        },
-        {
-          name: 'Eraser',
-        },
-      ],
-      selectedToolIdx: 0,
-    };
-  },
   mounted() {
-    this.setCanvas();
-    this.bindEvents();
+    this.setupCanvas();
   },
+  data(){
+    const socket = io.connect('http://localhost:5000')
+  },
+  
   methods: {
-    setCanvas() {
-      this.$refs.canvasWrapper.style.gridTemplateColumns = `${this.width}px 30px`;
-      this.$refs.canvasWrapper.style.width = `${this.width + 30}px`;
-      this.$refs.canvasWrapper.style.height = `${this.height}px`;
+    setupCanvas(){
+    var canvas = p5.createCanvas(600,400);
+    canvas.parent("sketch-holder")
+    p5.background(51);
 
-      this.canvasContext = this.$refs.canvas.getContext('2d');
-      this.canvasContext.lineJoin = 'round';
-      this.canvasContext.lineCap = 'round';
-      this.canvasContext.lineWidth = this.brushSize;
-      this.canvasContext.strokeStyle = this.tools[this.selectedToolIdx].color;
-
-      this.cursorContext = this.$refs.cursor.getContext('2d');
+    socket.on('mouse', newDrawing);
     },
-    bindEvents() {
-      this.$refs.canvas.addEventListener('mousedown', (event) => {
-        this.isDrawing = true;
-        [this.lastX, this.lastY] = [event.offsetX, event.offsetY];
-      });
-      this.$refs.canvas.addEventListener('mousemove', this.draw);
-      this.$refs.canvas.addEventListener('mouseup', () => this.isDrawing = false);
-      this.$refs.canvas.addEventListener('mouseout', () => this.isDrawing = false);
-    },
-    changeTool(tool) {
-      this.selectedToolIdx = tool;
-    },
-    draw(event) {
-      this.drawCursor(event);
-      if (!this.isDrawing) return;
-
-      if (this.tools[this.selectedToolIdx].name === 'Eraser') {
-        this.canvasContext.globalCompositeOperation = 'destination-out';
-      } else {
-        this.canvasContext.globalCompositeOperation = 'source-over';
-        this.canvasContext.strokeStyle = this.tools[this.selectedToolIdx].color;
-      }
-
-      this.canvasContext.beginPath();
-      this.canvasContext.moveTo(this.lastX, this.lastY);
-      this.canvasContext.lineTo(event.offsetX, event.offsetY);
-      this.canvasContext.stroke();
-      [this.lastX, this.lastY] = [event.offsetX, event.offsetY];
-    },
-    drawCursor(event) {
-      this.cursorContext.beginPath();
-      this.cursorContext.ellipse(
-        event.offsetX, event.offsetY,
-        this.brushSize, this.brushSize,
-        Math.PI / 4, 0, 2 * Math.PI
-      );
-      this.cursorContext.stroke();
-      setTimeout(() => {
-        this.cursorContext.clearRect(0, 0, this.width, this.height);
-      }, 100);
-    },
-    showColorPalette() {
-      const colorPalette = document.createElement('input');
-      colorPalette.addEventListener('change', (event) => {
-        this.tools[0].color = event.target.value;
-      });
-      colorPalette.type = 'color';
-      colorPalette.value = this.tools[0].color;
-      colorPalette.click();
-    },
-    download() {
-      const link = document.createElement('a');
-      link.download = `${this.outputName}.png`;
-      link.href = this.$refs.canvas.toDataURL()
-      link.click();
-    },
-    get() {
-      // const answer = this.$refs.canvas.toDataURL();
-      // alert(this.width, this.height);
-      this.imgdata = this.$refs.canvas.getContext("2d").getImageData(0, 0, this.width, this.height)
-      //var data = this.cursorContext.getImageData(0, 0, `${this.width}px`, `${this.height}`);
-      this.imgArray = this.imgdata.data;
-      alert(JSON.stringify(this.imgArray))
-    },
-    set(imgArray) {
-      this.$refs.canvas.putImageData(imgArray, 0 , 0);
+    mouseDragged(){
+       console.log('Sending' + p5.mouseX + "," + p5.mouseY);
+    var data = {
+        x: p5.mouseX,
+        y: p5.mouseY
     }
-
+    socket.emit('mouse' , data);
+    p5.noStroke();
+    p5.fill(255);
+    p5.ellipse(p5.mouseX, p5.mouseY, 36,36);
+    },
+    newDrawing(data){
+    p5.noStroke();
+    p5.fill(255 , 0 , 100);
+    p5.ellipse(data.x, data.y, 36,36);
+    }
   }
 }
 </script>
+
+
+
+
 <style scoped>
 .canvas-wrapper {
   display: grid;
