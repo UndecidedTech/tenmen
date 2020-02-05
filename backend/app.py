@@ -1,12 +1,15 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, request, jsonify
 from bson import ObjectId
+from flask_socketio import SocketIO
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql:///root:tenmen69#@3.17.145.132/tenmen"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
+socketio = SocketIO(app)
 db = SQLAlchemy(app)
+
 
 class User(db.Model):
     id = db.Column(db.String, primary_key=True)
@@ -41,3 +44,8 @@ def create_objectid():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+@socketio.on("connect")
+def handle_connect():
+    socketio.emit("recieved message: ", {"data": "connected"})

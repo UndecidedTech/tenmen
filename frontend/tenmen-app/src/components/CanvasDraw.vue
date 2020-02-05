@@ -5,7 +5,6 @@
 
 <script>
 import io from "socket.io-client"
-import io from "socket.io"
 import p5 from "p5"
 
 export default {
@@ -13,8 +12,10 @@ export default {
   mounted() {
     this.setupCanvas();
   },
-  data(){
-    const socket = io.connect('http://localhost:5000')
+  data() {
+    return {
+      socket: io('http://localhost:5000')
+    }
   },
   
   methods: {
@@ -23,15 +24,14 @@ export default {
     canvas.parent("sketch-holder")
     p5.background(51);
 
-    socket.on('mouse', newDrawing);
+    this.socket.on('mouse', this.newDrawing);
     },
-    mouseDragged(){
-       console.log('Sending' + p5.mouseX + "," + p5.mouseY);
+    mouseDragged() {
     var data = {
         x: p5.mouseX,
         y: p5.mouseY
     }
-    socket.emit('mouse' , data);
+    this.socket.emit('mouse' , data);
     p5.noStroke();
     p5.fill(255);
     p5.ellipse(p5.mouseX, p5.mouseY, 36,36);
