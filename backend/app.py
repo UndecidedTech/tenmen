@@ -2,11 +2,12 @@ from flask_sqlalchemy import SQLAlchemy
 from flask import Flask, request, jsonify
 from bson import ObjectId
 from flask_socketio import SocketIO
+from flask_cors import CORS
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "mysql:///root:tenmen69#@3.17.145.132/tenmen"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-
+CORS(app)
 socketio = SocketIO(app)
 db = SQLAlchemy(app)
 
